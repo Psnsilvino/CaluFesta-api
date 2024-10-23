@@ -32,6 +32,17 @@ export const getProducts = async (request: Request, response: Response): Promise
 	}
 };
 
+export const getProductsByCategory = async (request: Request, response: Response): Promise<void> => {
+	const { categoria } = request.params;
+	try {
+		const products = await Produto.find({ categoria: categoria });
+		response.status(200).json(products);
+	} 
+	catch (error) {
+		response.status(500).json({ message: 'Erro ao obter produtos', error });
+	}
+};
+
 export const getProduct = async (request: Request, response: Response): Promise<void> => {
 	try {
 		const { id } = request.params;
