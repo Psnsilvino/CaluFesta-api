@@ -22,3 +22,20 @@ export const updateProductSchema = z.object({
     quantidadeEmLocacao: z.number().nullish(), 
     preco: z.number().nullish()
 });
+
+export const registerUserSchema = z.object({
+    nome: z.string(), 
+    email: z.string(), 
+    senha: z.string(), 
+});
+
+export const loginSchema = z.object({
+    email: z.string(), 
+    senha: z.string(), 
+});
+
+export const updateUserSchema = z.object({
+    nome: z.string().nullish(), 
+    email: z.string().nullish(), 
+    senha: z.string().nullish(), 
+});

@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { createProduct, deleteProduct, getProduct, getProducts, updateProduct } from "../handlers/products";
+import { deleteUser, getUsers, login, register, updateUser } from "../handlers/users";
 
 const userRouter = Router();
 
-userRouter.get("/", getProducts);
-userRouter.post("/register", createProduct);
-userRouter.get("/:id", getProduct);
-userRouter.put("/:id", updateProduct);
-userRouter.delete("/:id", deleteProduct);
+userRouter.get("/", getUsers);
+userRouter.post("/register", register);
+userRouter.post("/login", login);
+userRouter.put("/:id", updateUser);
+userRouter.delete("/:id", deleteUser);
 
 export default userRouter;

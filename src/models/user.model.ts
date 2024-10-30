@@ -1,12 +1,9 @@
 import { Schema, model, Document } from 'mongoose';
 
 interface IUser extends Document {
-	nome: string;
+	nome: string
 	email: string;
-	senha: string;
-	endereco: string;
-	telefone: number;
-    tipo_user: string;
+    senha: string;
 } 
 
 
@@ -17,43 +14,23 @@ const userSchema = new Schema<IUser>({
 		required: true,
 		trim: true,
 	},
-	
+
 	email: {
 		type: String,
 		required: true,
 		trim: true,
 	},
-	
-	senha: {
-		type: String,
-		required: true,
-		trim: true,
-	},
-	
-	endereco: {
-		type: String,
-		required: true,
-		trim: true,
-	},
-	
-	telefone: {
-		type: Number,
-		required: true,
-		min: 11,
-        max: 11,
-	},
 
-    tipo_user: {
+    senha: {
         type: String,
         required: true,
-        default: 'cliente',
-
+        trim: true
     }
 	
 }, {
 	timestamps: true 
 });
 
-const user = model<IUser>('Produto', userSchema);
+const user = model<IUser>('User', userSchema);
 
 export default user;
