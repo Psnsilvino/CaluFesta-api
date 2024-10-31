@@ -3,7 +3,7 @@ import { Schema, model, Document } from 'mongoose';
 interface ILocation extends Document {
 	data_inicio: Date;
 	data_fim: Date;
-	id_user: string;
+	cliente: string;
 	endereco: string;
 	pagamento: string;
     produtos: string;
@@ -17,8 +17,14 @@ const locationSchema = new Schema<ILocation>({
 		required: true,
 		
 	},
+
+	data_fim: {
+		type: Date,
+		required: true,
+		
+	},
 	
-	id_user: {
+	cliente: {
 		type: String,
 		required: true,
         trim: true,
@@ -40,10 +46,7 @@ const locationSchema = new Schema<ILocation>({
 	produtos: {
 		type: String,
 		required: true,
-	
 	}
-
- 
 	
 }, {
 	timestamps: true 
