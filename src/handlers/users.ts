@@ -34,7 +34,7 @@ export const login = async (request: Request, response: Response): Promise<void>
 	const { email, senha } = request.body;
 	try {
 		const user = await User.find({ email: email, senha: senha });
-        if (user) response.status(200).json(user);
+        if (user) response.status(200).json({"pomba": user});
         else response.status(500).json("usuario nao encontrado");
 	} 
 	catch (error) {

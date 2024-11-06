@@ -6,7 +6,6 @@ interface ILocation extends Document {
 	cliente: string;
 	endereco: string;
 	pagamento: string;
-    produtos: string;
 } 
 
 
@@ -42,11 +41,6 @@ const locationSchema = new Schema<ILocation>({
 		required: true,
 		trim: true,
 	},
-	
-	produtos: {
-		type: String,
-		required: true,
-	}
 	
 }, {
 	timestamps: true 
