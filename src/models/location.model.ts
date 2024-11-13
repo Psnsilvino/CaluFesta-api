@@ -46,6 +46,6 @@ const locationSchema = new Schema<ILocation>({
 	timestamps: true 
 });
 
-const location = model<ILocation>('Produto', locationSchema);
+const location = model<ILocation>('Location', locationSchema);
 
 export default location;

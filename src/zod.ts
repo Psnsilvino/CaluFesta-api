@@ -39,3 +39,17 @@ export const updateUserSchema = z.object({
     email: z.string().nullish(), 
     senha: z.string().nullish(), 
 });
+
+export const createClientSchema = z.object({
+    nome: z.string(), 
+    email: z.string(), 
+    endereco: z.string(), 
+    telefone: z.number(), 
+});
+
+export const updateClientSchema = z.object({
+    nome: z.string().nullish(), 
+    email: z.string().nullish(), 
+    endereco: z.string().nullish(), 
+    telefone: z.number().nullish(),
+});
