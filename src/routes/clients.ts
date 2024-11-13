@@ -3,10 +3,10 @@ import { createClient, getClients, getClientById, updateClient, deleteClient } f
 
 const clientRouter = Router();
 
-clientRouter.post('/clients', createClient);
-clientRouter.get('/clients', getClients);
-clientRouter.get('/clients/:id', getClientById);
-clientRouter.put('/clients/:id', updateClient);
-clientRouter.delete('/clients/:id', deleteClient);
+clientRouter.post('/', createClient);
+clientRouter.get('/', getClients);
+clientRouter.get('/:id', getClientById);
+clientRouter.put('/:id', updateClient);
+clientRouter.delete('/:id', deleteClient);
 
 export default clientRouter;

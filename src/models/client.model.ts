@@ -31,8 +31,6 @@ const clientSchema = new Schema<IClient>({
 	telefone: {
 		type: Number,
 		required: true,
-		min: 11,
-        max: 11,
 	},
 	
 }, {

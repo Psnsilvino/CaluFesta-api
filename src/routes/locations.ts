@@ -3,10 +3,10 @@ import { createLocation, deleteLocation, getLocationById, getLocations, updateLo
 
 const locationRouter = Router();
 
-locationRouter.post('/locations', createLocation);
-locationRouter.get('/locations', getLocations);
-locationRouter.get('/locations/:id', getLocationById);
-locationRouter.put('/locations/:id', updateLocation);
-locationRouter.delete('/locations/:id', deleteLocation);
+locationRouter.post('/', createLocation);
+locationRouter.get('/', getLocations);
+locationRouter.get('/:id', getLocationById);
+locationRouter.put('/:id', updateLocation);
+locationRouter.delete('/:id', deleteLocation);
 
 export default locationRouter;
