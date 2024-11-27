@@ -1,9 +1,13 @@
 import { Request, Response } from "express";
 import User from '../models/user.model';
-import { registerUserSchema, updateUserSchema } from "../zod";
+import { loginSchema, registerUserSchema, updateUserSchema } from "../zod";
+import { generateToken } from "../utils/generateToken";
+import { env } from '../zod';
 
 export const getUsers = async (request: Request, response: Response): Promise<void> => {
+
 	try {
+		console.log(request)
 		const users = await User.find();
 		response.status(200).json(users);
 	} 
@@ -13,34 +17,63 @@ export const getUsers = async (request: Request, response: Response): Promise<vo
 };
 
 export const register = async (request: Request, response: Response) => {
+
     const user = registerUserSchema.safeParse(request.body)
 
-    if(user.success) {
+    if (user.success) {
         try {
             const newUser = new User(user.data)
             const userSalvo = newUser.save()
             response.status(201).json(userSalvo)
-        } catch (error) {
-            console.log(error)
-            response.sendStatus(500)
+        } 
+		catch (error) {
+            response.sendStatus(500).json(error)
         }
-    } else {
+    } 
+	else {
         response.status(500).json(user.error.message);
     }
 }
 
 export const login = async (request: Request, response: Response): Promise<void> => {
 
-	const { email, senha } = request.body;
+	const user = loginSchema.safeParse(request.body);
+
 	try {
-		const user = await User.findOne({ email: email, senha: senha });
-        if (user) response.status(200).json({"pomba": user});
+		const loggedUser = await User.findOne(user.data);
+
+        if (loggedUser) {
+			const token = generateToken(loggedUser._id);
+
+			response.cookie("token", token, {
+				httpOnly: true,
+				secure: env.NODE_ENV === "production",
+				sameSite: "strict",
+				maxAge: 24 * 60 * 60 * 1000
+			});
+
+			response.status(200).json({
+				success: true,
+				message: "Usuario logado",
+				user: {
+					loggedUser,
+					password: undefined
+				}
+			});
+		}
+		
         else response.status(500).json("usuario nao encontrado");
 	} 
 	catch (error) {
 		response.status(500).json({ message: 'Erro ao obter produtos', error });
 	}
 };
+
+export const logout = async (request: Request, response: Response): Promise<void> => {
+
+	response.clearCookie("token")
+	response.status(200).json("Logged out successfully")
+}
 
 export const updateUser = async (request: Request, response: Response): Promise<void> => {
 
@@ -52,9 +85,7 @@ export const updateUser = async (request: Request, response: Response): Promise<
 			const { id } = request.params;
 			const updatedProduct = await User.findByIdAndUpdate(id, user.data, { new: true });
 
-			if (!updatedProduct) {
-				response.status(404).json({ message: 'Produto não encontrado' });
-			}
+			if (!updatedProduct) response.status(404).json({ message: 'Produto não encontrado' });
 
 			response.status(200).json(updatedProduct);
 		} 
@@ -68,13 +99,12 @@ export const updateUser = async (request: Request, response: Response): Promise<
 };
 
 export const deleteUser = async (request: Request, response: Response): Promise<void> => {
+
 	try {
 		const { id } = request.params;
 		const deletedUser = await User.findByIdAndDelete(id);
 		
-		if (!deletedUser) {
-			response.status(404).json({ message: 'Usuario não encontrado' });
-		}
+		if (!deletedUser) response.status(404).json({ message: 'Usuario não encontrado' });
 		
 		response.status(200).json({ message: 'Usuario deletado com sucesso' });
 	} 

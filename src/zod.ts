@@ -2,7 +2,9 @@ import { z } from "zod";
 
 const envSchema = z.object({
     MONGO_URI: z.string().url(),
-    PORT: z.string()
+    PORT: z.string(),
+    JWT_SECRET: z.string(),
+    NODE_ENV: z.string(),
 });
 
 export const env = envSchema.parse(process.env);
@@ -52,4 +54,32 @@ export const updateClientSchema = z.object({
     email: z.string().nullish(), 
     endereco: z.string().nullish(), 
     telefone: z.number().nullish(),
+});
+
+export const createLocationSchema = z.object ({
+	data_inicio: z.date(),
+	data_fim: z.date(),
+	cliente: z.string(),
+	endereco: z.string(),
+	pagamento: z.string(),
+});
+
+export const updateLocationSchema = z.object ({
+	data_inicio: z.date().nullish(),
+	data_fim: z.date().nullish(),
+	cliente: z.string().nullish(),
+	endereco: z.string().nullish(),
+	pagamento: z.string().nullish(),
+});
+
+export const createLocatedProductSchema = z.object ({
+	produto: z.string(),
+	locacao: z.string(),
+	quantidade: z.number(),
+});
+
+export const updateLocatedProductSchema = z.object ({
+	produto: z.string().nullish(),
+	locacao: z.string().nullish(),
+	quantidade: z.number().nullish(),
 });

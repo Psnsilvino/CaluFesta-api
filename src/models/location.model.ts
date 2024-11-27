@@ -1,15 +1,7 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model } from 'mongoose';
+import { Location } from '../interfaces/Location';
 
-interface ILocation extends Document {
-	data_inicio: Date;
-	data_fim: Date;
-	cliente: string;
-	endereco: string;
-	pagamento: string;
-} 
-
-
-const locationSchema = new Schema<ILocation>({
+const locationSchema = new Schema<Location>({
 	
 	data_inicio: {
 		type: Date,
@@ -46,6 +38,6 @@ const locationSchema = new Schema<ILocation>({
 	timestamps: true 
 });
 
-const location = model<ILocation>('Location', locationSchema);
+const location = model<Location>('Location', locationSchema);
 
 export default location;

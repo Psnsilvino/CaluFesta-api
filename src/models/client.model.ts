@@ -1,14 +1,7 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model } from 'mongoose';
+import { Client } from '../interfaces/Client';
 
-interface IClient extends Document {
-	nome: string;
-	email: string;
-	endereco: string;
-	telefone: number;
-} 
-
-
-const clientSchema = new Schema<IClient>({
+const clientSchema = new Schema<Client>({
 	
 	nome: {
 		type: String,
@@ -37,6 +30,6 @@ const clientSchema = new Schema<IClient>({
 	timestamps: true 
 });
 
-const client = model<IClient>('Client', clientSchema);
+const client = model<Client>('Client', clientSchema);
 
 export default client;

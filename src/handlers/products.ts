@@ -23,6 +23,7 @@ export const createProduct = async (request: Request, response: Response): Promi
 };
 
 export const getProducts = async (request: Request, response: Response): Promise<void> => {
+	
 	try {
 		const products = await Produto.find();
 		response.status(200).json(products);
@@ -33,7 +34,9 @@ export const getProducts = async (request: Request, response: Response): Promise
 };
 
 export const getProductsByCategory = async (request: Request, response: Response): Promise<void> => {
+
 	const { categoria } = request.params;
+
 	try {
 		const products = await Produto.find({ categoria: categoria });
 		response.status(200).json(products);
@@ -44,14 +47,16 @@ export const getProductsByCategory = async (request: Request, response: Response
 };
 
 export const getProduct = async (request: Request, response: Response): Promise<void> => {
+
 	try {
 		const { id } = request.params;
 		const product = await Produto.findById(id);
-		if (!product) {
-			response.status(404).json({ message: 'Produto não encontrado' });
-		}
+
+		if (!product) response.status(404).json({ message: 'Produto não encontrado' });
+
 		response.status(200).json(product);
-	} catch (error) {
+	} 
+	catch (error) {
 		response.status(500).json({ message: 'Erro ao obter produto', error });
 	}
 };
@@ -66,10 +71,8 @@ export const updateProduct = async (request: Request, response: Response): Promi
 			const { id } = request.params;
 			const updatedProduct = await Produto.findByIdAndUpdate(id, produto.data, { new: true });
 
-			if (!updatedProduct) {
-				response.status(404).json({ message: 'Produto não encontrado' });
-			}
-
+			if (!updatedProduct) response.status(404).json({ message: 'Produto não encontrado' });
+			
 			response.status(200).json(updatedProduct);
 		} 
 		catch (error) {
@@ -86,9 +89,7 @@ export const deleteProduct = async (request: Request, response: Response): Promi
 		const { id } = request.params;
 		const deletedProduct = await Produto.findByIdAndDelete(id);
 		
-		if (!deletedProduct) {
-			response.status(404).json({ message: 'Produto não encontrado' });
-		}
+		if (!deletedProduct) response.status(404).json({ message: 'Produto não encontrado' });
 		
 		response.status(200).json({ message: 'Produto deletado com sucesso' });
 	} 
