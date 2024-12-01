@@ -3,6 +3,7 @@ import User from '../models/user.model';
 import { loginSchema, registerUserSchema, updateUserSchema } from "../zod";
 import { generateToken } from "../utils/generateToken";
 import { env } from '../zod';
+import { CustomRequest } from "../interfaces/customRequest";
 
 export const getUsers = async (request: Request, response: Response): Promise<void> => {
 
@@ -45,6 +46,8 @@ export const login = async (request: Request, response: Response): Promise<void>
         if (loggedUser) {
 			const token = generateToken(loggedUser._id);
 
+			console.log(token)
+
 			response.cookie("token", token, {
 				httpOnly: true,
 				secure: env.NODE_ENV === "production",
@@ -71,8 +74,11 @@ export const login = async (request: Request, response: Response): Promise<void>
 
 export const logout = async (request: Request, response: Response): Promise<void> => {
 
-	response.clearCookie("token")
-	response.status(200).json("Logged out successfully")
+	response.clearCookie('token', {
+        httpOnly: true,
+		secure: env.NODE_ENV === "production",
+		sameSite: "strict",           
+    }).status(200).json({ message: 'Logout bem-sucedido. Cookie removido.' });;
 }
 
 export const updateUser = async (request: Request, response: Response): Promise<void> => {
@@ -111,4 +117,24 @@ export const deleteUser = async (request: Request, response: Response): Promise<
 	catch (error) {
 		response.status(500).json({ message: 'Erro ao deletar o usuario', error });
 	}
+}; 
+
+export const checkAuth = async (req: CustomRequest, res: Response): Promise<void> => {
+  try {
+    if (!req.userId) {
+      res.status(401).json({ success: false, message: "Unauthorized - no userId provided" });
+      return;
+    }
+
+    const user = await User.findById(req.userId).select("-password");
+    if (!user) {
+      res.status(400).json({ success: false, message: "User not found" });
+      return;
+    }
+
+    res.status(200).json({ success: true, user });
+  } catch (error) {
+    console.error("Error in checkAuth ", error);
+    res.status(400).json({ success: false, message: error instanceof Error ? error.message : "Unexpected error" });
+  }
 };

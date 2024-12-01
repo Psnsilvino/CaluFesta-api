@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import Location from '../models/location.model';
-import { createLocationSchema } from '../zod';
+import { createLocationSchema, updateLocationSchema } from '../zod';
 
 export const getLocations = async (request: Request, response: Response) => {
 
@@ -36,7 +36,9 @@ export const getLocationById = async (request: Request, response: Response) => {
 
 	try {
 		const locationItem = await Location.findById(request.params.id);
+
 		if (!locationItem) return response.status(404).json({ message: 'Location not found' });
+		
 		response.status(200).json(locationItem);
 	} 
 	catch (error) {
@@ -46,23 +48,34 @@ export const getLocationById = async (request: Request, response: Response) => {
 
 export const updateLocation = async (request: Request, response: Response) => {
 
-	try {
-		const updatedLocation = await Location.findByIdAndUpdate(request.params.id, request.body, { new: true });
+	const location = updateLocationSchema.safeParse(request.body)
 
-		if (!updatedLocation) return response.status(404).json({ message: 'Location not found' });
-		
-		response.status(200).json(updatedLocation);
-	} 
-	catch (error) {
-		response.status(400).json({ message: error });
+	if (location.success) {
+
+		try {
+			const updatedLocation = await Location.findByIdAndUpdate(request.params.id, location, { new: true });
+	
+			if (!updatedLocation) return response.status(404).json({ message: 'Location not found' });
+			
+			response.status(200).json(updatedLocation);
+		} 
+		catch (error) {
+			response.status(400).json({ message: error });
+		}
+	}
+	else {
+		response.status(500).json({ message: location.error.message });
 	}
 };
 
 
 export const deleteLocation = async (request: Request, response: Response) => {
+
 	try {
 		const deletedLocation = await Location.findByIdAndDelete(request.params.id);
+
 		if (!deletedLocation) return response.status(404).json({ message: 'Location not found' });
+
 		response.status(200).json({ message: 'Location deleted successfully' });
 	} 
 	catch (error) {
