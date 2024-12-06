@@ -4,15 +4,16 @@ import { Location } from '../interfaces/Location';
 const locationSchema = new Schema<Location>({
 	
 	data_inicio: {
-		type: Date,
+		type: String,
 		required: true,
+		trim: true
 		
 	},
 
 	data_fim: {
-		type: Date,
+		type: String,
 		required: true,
-		
+		trim: true
 	},
 	
 	cliente: {
@@ -33,6 +34,11 @@ const locationSchema = new Schema<Location>({
 		required: true,
 		trim: true,
 	},
+
+	concluida: {
+		type: Boolean,
+		required: true
+	}
 	
 }, {
 	timestamps: true 

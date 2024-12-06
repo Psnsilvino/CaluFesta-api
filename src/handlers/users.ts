@@ -23,9 +23,9 @@ export const register = async (request: Request, response: Response) => {
 
     if (user.success) {
         try {
-            const newUser = new User(user.data)
-            const userSalvo = newUser.save()
-            response.status(201).json(userSalvo)
+            const newUser = new User(user.data);
+            const userSalvo = newUser.save();
+            response.status(201).json(userSalvo);
         } 
 		catch (error) {
             response.sendStatus(500).json(error)
@@ -45,8 +45,6 @@ export const login = async (request: Request, response: Response): Promise<void>
 
         if (loggedUser) {
 			const token = generateToken(loggedUser._id);
-
-			console.log(token)
 
 			response.cookie("token", token, {
 				httpOnly: true,

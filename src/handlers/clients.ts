@@ -50,7 +50,7 @@ export const getClientById = async (request: Request, response: Response) => {
 
 export const updateClient = async (request: Request, response: Response) => {
 
-     const clientInfo = updateClientSchema.safeParse(request.body)
+     const clientInfo = updateClientSchema.safeParse(request.body);
 
      if (clientInfo.success) {
 

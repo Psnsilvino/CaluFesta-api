@@ -46,30 +46,32 @@ export const createClientSchema = z.object({
     nome: z.string(), 
     email: z.string(), 
     endereco: z.string(), 
-    telefone: z.number(), 
+    telefone: z.string(), 
 });
 
 export const updateClientSchema = z.object({
     nome: z.string().nullish(), 
     email: z.string().nullish(), 
     endereco: z.string().nullish(), 
-    telefone: z.number().nullish(),
+    telefone: z.string().nullish(),
 });
 
 export const createLocationSchema = z.object ({
-	data_inicio: z.date(),
-	data_fim: z.date(),
+	data_inicio: z.string(),
+	data_fim: z.string(),
 	cliente: z.string(),
 	endereco: z.string(),
 	pagamento: z.string(),
+    concluida: z.boolean()
 });
 
 export const updateLocationSchema = z.object ({
-	data_inicio: z.date().nullish(),
-	data_fim: z.date().nullish(),
+	data_inicio: z.string().nullish(),
+	data_fim: z.string().nullish(),
 	cliente: z.string().nullish(),
 	endereco: z.string().nullish(),
 	pagamento: z.string().nullish(),
+    concluida: z.boolean().nullish()
 });
 
 export const createLocatedProductSchema = z.object ({

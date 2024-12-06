@@ -15,11 +15,11 @@ export const getLocations = async (request: Request, response: Response) => {
 
 export const createLocation = async (request: Request, response: Response) => {
 
-	const location = createLocationSchema.safeParse(request.body)
+	const location = createLocationSchema.safeParse(request.body);
 	
 	if (location.success) {
 		try {
-			const newLocation = new Location(location);
+			const newLocation = new Location(location.data);
 			const savedLocation = await newLocation.save();
 			response.status(201).json(savedLocation);
 		} 

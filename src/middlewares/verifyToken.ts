@@ -21,7 +21,6 @@ export const verifyToken = (request: CustomRequest, response: Response, next: Ne
         next();
     } 
     catch (error) {
-        console.error("Error in verifyToken ", error);
-        response.status(500).json({ success: false, message: "Server error" });
+        response.status(500);
     }
 }

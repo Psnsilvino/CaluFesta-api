@@ -63,7 +63,7 @@ export const getProduct = async (request: Request, response: Response): Promise<
 
 export const updateProduct = async (request: Request, response: Response): Promise<void> => {
 
-	const produto = updateProductSchema.safeParse(request.body)
+	const produto = updateProductSchema.safeParse(request.body);
 
 	if (produto.success) {
 		try {
