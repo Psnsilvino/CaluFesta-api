@@ -5,11 +5,11 @@ import { checkAuth } from "../handlers/users";
 
 const productRouter = Router();
 
-productRouter.get("/", getProducts);
+productRouter.get("/", verifyToken, getProducts);
 productRouter.get("/:categoria", verifyToken, getProductsByCategory);
-productRouter.post("/register", createProduct);
-productRouter.get("/:id", getProduct);
-productRouter.put("/:id", updateProduct);
-productRouter.delete("/:id", deleteProduct);
+productRouter.post("/register", verifyToken, createProduct);
+productRouter.get("/:id", verifyToken, getProduct);
+productRouter.put("/:id", verifyToken, updateProduct);
+productRouter.delete("/:id", verifyToken, deleteProduct);
 
 export default productRouter;

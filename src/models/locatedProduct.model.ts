@@ -8,6 +8,12 @@ const locatedProductSchema = new Schema<LocatedProduct>({
 		required: true,
 		trim: true,
 	},
+
+	nomeProduto: {
+		type: String,
+		required: true,
+		trim: true
+	},
 	
 	locacao: {
 		type: String,
@@ -16,6 +22,12 @@ const locatedProductSchema = new Schema<LocatedProduct>({
 	},
 	
 	quantidade: {
+		type: Number,
+		required: true,
+		min: 0,
+	},
+
+	preco: {
 		type: Number,
 		required: true,
 		min: 0,

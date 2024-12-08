@@ -76,12 +76,16 @@ export const updateLocationSchema = z.object ({
 
 export const createLocatedProductSchema = z.object ({
 	produto: z.string(),
+    nomeProduto: z.string(),
 	locacao: z.string(),
 	quantidade: z.number(),
+	preco: z.number(),
 });
 
 export const updateLocatedProductSchema = z.object ({
 	produto: z.string().nullish(),
+    nomeProduto: z.string().nullish(),
 	locacao: z.string().nullish(),
 	quantidade: z.number().nullish(),
+	preco: z.number().nullish(),
 });

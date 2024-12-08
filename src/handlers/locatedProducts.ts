@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import Alugado from '../models/locatedProduct.model';
+import Produto from '../models/product.model';
 import { createLocatedProductSchema } from '../zod';
 
 export const createProduct = async (request: Request, response: Response) => {
@@ -8,6 +9,17 @@ export const createProduct = async (request: Request, response: Response) => {
 
 	try {
 		const newProduct = await Alugado.create(locatedProduct.data);
+
+		if (!newProduct) response.status(400).json("Erro ao adicionar o produto")
+
+		const updatedProduct = await Produto.findByIdAndUpdate(
+			locatedProduct.data?.produto, 
+			{ $inc: { quantidadeEmLocacao: locatedProduct.data?.quantidade } }, 
+			{ new: true }
+		);
+
+		if (!updatedProduct) response.status(400).json("Erro ao atualizar o produto")
+
 		response.status(201).json(newProduct);
 	} 
 	catch (error) {
@@ -18,6 +30,15 @@ export const createProduct = async (request: Request, response: Response) => {
 export const getProducts = async (request: Request, response: Response) => {
 	try {
 		const products = await Alugado.find();
+		response.status(200).json(products);
+	} catch (error) {
+		response.status(500).json({ error: 'Erro ao obter produtos', details: error });
+	}
+};
+
+export const getLocationProducts = async (request: Request, response: Response) => {
+	try {
+		const products = await Alugado.find({ locacao: request.params.idLocacao });
 		response.status(200).json(products);
 	} catch (error) {
 		response.status(500).json({ error: 'Erro ao obter produtos', details: error });
@@ -40,7 +61,7 @@ export const getProductById = async (request: Request, response: Response) => {
 export const updateProduct = async (request: Request, response: Response) => {
 	try {
 		const { id } = request.params;
-		const updatedProduct = await Alugado.findByIdAndUpdate(id, request.body, { new: true, runValidators: true });
+		const updatedProduct = await Alugado.findByIdAndUpdate(id, request.body, { new: true });
 		if (!updatedProduct) {
 			return response.status(404).json({ error: 'Produto não encontrado' });
 		}
