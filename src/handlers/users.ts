@@ -8,7 +8,6 @@ import { CustomRequest } from "../interfaces/customRequest";
 export const getUsers = async (request: Request, response: Response): Promise<void> => {
 
 	try {
-		console.log(request)
 		const users = await User.find();
 		response.status(200).json(users);
 	} 

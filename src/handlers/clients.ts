@@ -51,6 +51,7 @@ export const getClientById = async (request: Request, response: Response) => {
 export const updateClient = async (request: Request, response: Response) => {
 
      const clientInfo = updateClientSchema.safeParse(request.body);
+     console.log(clientInfo)
 
      if (clientInfo.success) {
 
@@ -66,7 +67,8 @@ export const updateClient = async (request: Request, response: Response) => {
         }
      } 
      else {
-        response.status(400).json({ message: clientInfo.error.message });
+        
+        response.status(402).json({ message: clientInfo.error.message });
      }
 };
 
